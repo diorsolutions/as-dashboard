@@ -12,14 +12,14 @@
 
 =========================================================
 
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the software.
+* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
 
 import { useState, useEffect, useMemo } from "react";
 
 // react-router components
-import { Route, Switch, Redirect, useLocation } from "react-router-dom";
+import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 
 // @mui material components
 import { ThemeProvider } from "@mui/material/styles";
@@ -102,7 +102,7 @@ export default function App() {
       }
 
       if (route.route) {
-        return <Route exact path={route.route} component={route.component} key={route.key} />;
+        return <Route path={route.route} element={<route.component />} key={route.key} />;
       }
 
       return null;
@@ -151,10 +151,10 @@ export default function App() {
           </>
         )}
         {layout === "vr" && <Configurator />}
-        <Switch>
+        <Routes>
           {getRoutes(routes)}
-          <Redirect from="*" to="/dashboard" />
-        </Switch>
+          <Route path="*" element={<Navigate to="/dashboard" replace />} />
+        </Routes>
       </ThemeProvider>
     </CacheProvider>
   ) : (
@@ -175,10 +175,10 @@ export default function App() {
         </>
       )}
       {layout === "vr" && <Configurator />}
-      <Switch>
+      <Routes>
         {getRoutes(routes)}
-        <Redirect from="*" to="/dashboard" />
-      </Switch>
+        <Route path="*" element={<Navigate to="/dashboard" replace />} />
+      </Routes>
     </ThemeProvider>
   );
 }

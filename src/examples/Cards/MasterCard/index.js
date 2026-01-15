@@ -27,19 +27,30 @@ import PropTypes from "prop-types";
 import { RiMastercardFill } from "react-icons/ri";
 
 function MasterCard({ number, valid, cvv }) {
-  const numberString = String(number); // Ensure number is always a string
-  const numbers = [...numberString];
+  console.log("MasterCard number prop received:", number);
 
-  if (numbers.length < 16 || numbers.length > 16) {
-    throw new Error(
-      "Invalid value for the prop number, the value for the number prop shouldn't be greater than or less than 16 digits"
-    );
+  // Ensure number is a string, defaulting to "0000000000000000" if it's null, undefined, or an empty string.
+  const safeNumberString = (number === null || number === undefined || number === "")
+    ? "0000000000000000"
+    : String(number);
+
+  console.log("MasterCard safeNumberString:", safeNumberString);
+
+  // Split the string into an array of characters. This should always result in an array.
+  const numbers = safeNumberString.split('');
+
+  // Defensive check: if for some reason 'numbers' is not an array or has an invalid length,
+  // default to a safe 16-digit array to prevent further errors.
+  let displayNumbers = numbers;
+  if (!Array.isArray(numbers) || numbers.length !== 16) {
+    console.error("MasterCard: 'number' prop resulted in an invalid array or length. Falling back to default.", numbers);
+    displayNumbers = "0000000000000000".split('');
   }
 
-  const num1 = numbers.slice(0, 4).join("");
-  const num2 = numbers.slice(4, 8).join("");
-  const num3 = numbers.slice(8, 12).join("");
-  const num4 = numbers.slice(12, 16).join("");
+  const num1 = displayNumbers.slice(0, 4).join("");
+  const num2 = displayNumbers.slice(4, 8).join("");
+  const num3 = displayNumbers.slice(8, 12).join("");
+  const num4 = displayNumbers.slice(12, 16).join("");
 
   return (
     <Card sx={{ background: `url('${billingCard}')`, backdropfilter: "blur(31px)" }}>

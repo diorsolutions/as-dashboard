@@ -27,7 +27,8 @@ import PropTypes from "prop-types";
 import { RiMastercardFill } from "react-icons/ri";
 
 function MasterCard({ number, valid, cvv }) {
-  const numbers = [...`${number}`];
+  const numberString = String(number); // Ensure number is always a string
+  const numbers = [...numberString];
 
   if (numbers.length < 16 || numbers.length > 16) {
     throw new Error(
@@ -47,7 +48,7 @@ function MasterCard({ number, valid, cvv }) {
           color="white"
           lineHeight={0}
           display="flex"
-          justifyContent="space-beetween"
+          justifyContent="space-between"
           alignItems="center"
           width="100%"
           sx={{ width: "100%" }}
@@ -105,6 +106,7 @@ function MasterCard({ number, valid, cvv }) {
 // Setting default values for the props of MasterCard
 MasterCard.defaultProps = {
   color: "dark",
+  number: "0000000000000000", // Default to a 16-digit string
 };
 
 // Typechecking props for the MasterCard
@@ -119,6 +121,9 @@ MasterCard.propTypes = {
     "dark",
     "text",
   ]),
+  number: PropTypes.oneOfType([PropTypes.string, PropTypes.number]), // Allow string or number
+  valid: PropTypes.string.isRequired,
+  cvv: PropTypes.string.isRequired,
 };
 
 export default MasterCard;

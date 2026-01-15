@@ -27,31 +27,18 @@ import PropTypes from "prop-types";
 import { RiMastercardFill } from "react-icons/ri";
 
 function MasterCard({ number, valid, cvv }) {
-  console.log("MasterCard number prop received:", number);
+  const numbers = [...`${number}`];
 
-  // Ensure number is a string, defaulting to "0000000000000000" if it's null, undefined, or an empty string.
-  const rawNumberString = (number === null || number === undefined || number === "")
-    ? "0000000000000000"
-    : String(number);
-
-  console.log("MasterCard rawNumberString (after initial conversion):", rawNumberString);
-
-  // Remove non-digit characters and ensure it's exactly 16 digits long
-  let safeNumberString = rawNumberString.replace(/\D/g, ''); // Remove non-digits
-  if (safeNumberString.length < 16) {
-    safeNumberString = safeNumberString.padEnd(16, '0'); // Pad with '0' if too short
-    console.warn("MasterCard: 'number' prop was too short, padded with zeros:", safeNumberString);
-  } else if (safeNumberString.length > 16) {
-    safeNumberString = safeNumberString.substring(0, 16); // Truncate if too long
-    console.warn("MasterCard: 'number' prop was too long, truncated:", safeNumberString);
+  if (numbers.length < 16 || numbers.length > 16) {
+    throw new Error(
+      "Invalid value for the prop number, the value for the number prop shouldn't be greater than or less than 16 digits"
+    );
   }
 
-  console.log("MasterCard final safeNumberString (16 digits):", safeNumberString);
-
-  const num1 = safeNumberString.slice(0, 4);
-  const num2 = safeNumberString.slice(4, 8);
-  const num3 = safeNumberString.slice(8, 12);
-  const num4 = safeNumberString.slice(12, 16);
+  const num1 = numbers.slice(0, 4).join("");
+  const num2 = numbers.slice(4, 8).join("");
+  const num3 = numbers.slice(8, 12).join("");
+  const num4 = numbers.slice(12, 16).join("");
 
   return (
     <Card sx={{ background: `url('${billingCard}')`, backdropfilter: "blur(31px)" }}>
@@ -60,7 +47,7 @@ function MasterCard({ number, valid, cvv }) {
           color="white"
           lineHeight={0}
           display="flex"
-          justifyContent="space-between"
+          justifyContent="space-beetween"
           alignItems="center"
           width="100%"
           sx={{ width: "100%" }}
@@ -118,7 +105,6 @@ function MasterCard({ number, valid, cvv }) {
 // Setting default values for the props of MasterCard
 MasterCard.defaultProps = {
   color: "dark",
-  number: "0000000000000000", // Default to a 16-digit string
 };
 
 // Typechecking props for the MasterCard
@@ -133,9 +119,6 @@ MasterCard.propTypes = {
     "dark",
     "text",
   ]),
-  number: PropTypes.oneOfType([PropTypes.string, PropTypes.number]), // Allow string or number
-  valid: PropTypes.string.isRequired,
-  cvv: PropTypes.string.isRequired,
 };
 
 export default MasterCard;

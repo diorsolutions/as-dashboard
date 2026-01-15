@@ -12,14 +12,14 @@
 
 =========================================================
 
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the software.
 
 */
 
 import { useState, useEffect, useMemo } from "react";
 
 // react-router components
-import { Routes, Route, useLocation, Navigate } from "react-router-dom";
+import { Route, Switch, Redirect, useLocation } from "react-router-dom";
 
 // @mui material components
 import { ThemeProvider } from "@mui/material/styles";
@@ -38,15 +38,15 @@ import theme from "assets/theme";
 import themeRTL from "assets/theme/theme-rtl";
 
 // RTL plugins
-import rtlPlugin from "stylis-plugin-rtl";
+import safeRtlPlugin from "./utils/safeRtlPlugin";
 import { CacheProvider } from "@emotion/react";
 import createCache from "@emotion/cache";
 
 // Vision UI Dashboard React routes
-import routes from "routes";
+import routes from "./routes";
 
 // Vision UI Dashboard React contexts
-import { useVisionUIController, setMiniSidenav, setOpenConfigurator } from "context";
+import { useVisionUIController, setMiniSidenav, setOpenConfigurator } from "./context";
 
 export default function App() {
   const [controller, dispatch] = useVisionUIController();
@@ -59,7 +59,7 @@ export default function App() {
   useMemo(() => {
     const cacheRtl = createCache({
       key: "rtl",
-      stylisPlugins: [rtlPlugin],
+      stylisPlugins: [safeRtlPlugin],
     });
 
     setRtlCache(cacheRtl);
@@ -102,7 +102,7 @@ export default function App() {
       }
 
       if (route.route) {
-        return <Route path={route.route} element={<route.component />} key={route.key} />;
+        return <Route exact path={route.route} component={route.component} key={route.key} />;
       }
 
       return null;
@@ -151,10 +151,10 @@ export default function App() {
           </>
         )}
         {layout === "vr" && <Configurator />}
-        <Routes>
+        <Switch>
           {getRoutes(routes)}
-          <Route path="*" element={<Navigate to="/dashboard" replace />} />
-        </Routes>
+          <Redirect from="*" to="/dashboard" />
+        </Switch>
       </ThemeProvider>
     </CacheProvider>
   ) : (
@@ -175,10 +175,10 @@ export default function App() {
         </>
       )}
       {layout === "vr" && <Configurator />}
-      <Routes>
+      <Switch>
         {getRoutes(routes)}
-        <Route path="*" element={<Navigate to="/dashboard" replace />} />
-      </Routes>
+        <Redirect from="*" to="/dashboard" />
+      </Switch>
     </ThemeProvider>
   );
 }

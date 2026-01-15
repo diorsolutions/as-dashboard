@@ -45,15 +45,6 @@ function Table({ columns, rows }) {
   const { size, fontWeightBold } = typography;
   const { borderWidth } = borders;
 
-  // Guard against undefined columns or rows
-  if (!columns || !Array.isArray(columns)) {
-    return null;
-  }
-
-  if (!rows || !Array.isArray(rows)) {
-    return null;
-  }
-
   const renderColumns = columns.map(({ name, align, width }, key) => {
     let pl;
     let pr;
@@ -102,7 +93,7 @@ function Table({ columns, rows }) {
             key={uuidv4()}
             component="td"
             p={1}
-            borderBottom={row.hasBorder ? `${borderWidth[1]} solid ${grey[700]}` : null}
+            borderBottom={row.hasBorder ? `${borderWidth[1]} solid ${light.main}` : null}
           >
             <VuiBox display="flex" alignItems="center" py={0.5} px={1}>
               <VuiBox mr={2}>

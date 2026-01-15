@@ -18,37 +18,23 @@
 
 import React, { Component } from "react";
 import Chart from "react-apexcharts";
-import PropTypes from "prop-types"; // PropTypes importini qo'shish
 
 class BarChart extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      chartData: props.barChartData || [], // Default qiymatni ta'minlash
-      chartOptions: props.barChartOptions || {}, // Default qiymatni ta'minlash
+      chartData: [],
+      chartOptions: {},
     };
   }
 
   componentDidMount() {
     const { barChartData, barChartOptions } = this.props;
-    console.log("BarChart - componentDidMount - barChartData:", barChartData);
-    console.log("BarChart - componentDidMount - barChartOptions:", barChartOptions);
 
     this.setState({
-      chartData: barChartData || [],
-      chartOptions: barChartOptions || {},
+      chartData: barChartData,
+      chartOptions: barChartOptions,
     });
-  }
-
-  componentDidUpdate(prevProps) {
-    if (prevProps.barChartData !== this.props.barChartData || prevProps.barChartOptions !== this.props.barChartOptions) {
-      console.log("BarChart - componentDidUpdate - barChartData:", this.props.barChartData);
-      console.log("BarChart - componentDidUpdate - barChartOptions:", this.props.barChartOptions);
-      this.setState({
-        chartData: this.props.barChartData || [],
-        chartOptions: this.props.barChartOptions || {},
-      });
-    }
   }
 
   render() {
@@ -63,17 +49,5 @@ class BarChart extends Component {
     );
   }
 }
-
-// Setting default values for the props of BarChart
-BarChart.defaultProps = {
-  barChartData: [],
-  barChartOptions: {},
-};
-
-// Typechecking props for the BarChart
-BarChart.propTypes = {
-  barChartData: PropTypes.array,
-  barChartOptions: PropTypes.object,
-};
 
 export default BarChart;

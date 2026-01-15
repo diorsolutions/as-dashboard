@@ -37,7 +37,7 @@ function TimelineItem({ color, icon, title, dateTime, description, badges, lastI
   const isDark = useTimeline();
 
   const renderBadges =
-    badges && Array.isArray(badges) && badges.length > 0
+    badges.length > 0
       ? badges.map((badge, key) => {
           const badgeKey = `badge-${key}`;
 
@@ -78,7 +78,7 @@ function TimelineItem({ color, icon, title, dateTime, description, badges, lastI
             </VuiTypography>
           ) : null}
         </VuiBox>
-        {badges && Array.isArray(badges) && badges.length > 0 ? (
+        {badges.length > 0 ? (
           <VuiBox display="flex" pb={lastItem ? 1 : 2}>
             {renderBadges}
           </VuiBox>

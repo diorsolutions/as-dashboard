@@ -32,7 +32,7 @@ import VuiAvatar from "components/VuiAvatar";
 import VuiButton from "components/VuiButton";
 
 function ProfilesList({ title, profiles }) {
-  const renderProfiles = profiles && Array.isArray(profiles) ? profiles.map(({ image, name, description, action }) => (
+  const renderProfiles = profiles.map(({ image, name, description, action }) => (
     <VuiBox key={name} component="li" display="flex" alignItems="center" py={1} mb={1}>
       <VuiBox mr={2}>
         <VuiAvatar src={image} alt="something here" variant="rounded" shadow="md" />
@@ -64,7 +64,7 @@ function ProfilesList({ title, profiles }) {
         )}
       </VuiBox>
     </VuiBox>
-  )) : [];
+  ));
 
   return (
     <Card sx={{ height: "100%" }}>

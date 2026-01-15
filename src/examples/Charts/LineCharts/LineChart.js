@@ -18,38 +18,24 @@
 
 import React from "react";
 import ReactApexChart from "react-apexcharts";
-import PropTypes from "prop-types"; // PropTypes importini qo'shish
 
 class LineChart extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      chartData: props.lineChartData || [], // Default qiymatni ta'minlash
-      chartOptions: props.lineChartOptions || {}, // Default qiymatni ta'minlash
+      chartData: [],
+      chartOptions: {},
     };
   }
 
   componentDidMount() {
     const { lineChartData, lineChartOptions } = this.props;
-    console.log("LineChart - componentDidMount - lineChartData:", lineChartData);
-    console.log("LineChart - componentDidMount - lineChartOptions:", lineChartOptions);
 
     this.setState({
-      chartData: lineChartData || [],
-      chartOptions: lineChartOptions || {},
+      chartData: lineChartData,
+      chartOptions: lineChartOptions,
     });
-  }
-
-  componentDidUpdate(prevProps) {
-    if (prevProps.lineChartData !== this.props.lineChartData || prevProps.lineChartOptions !== this.props.lineChartOptions) {
-      console.log("LineChart - componentDidUpdate - lineChartData:", this.props.lineChartData);
-      console.log("LineChart - componentDidUpdate - lineChartOptions:", this.props.lineChartOptions);
-      this.setState({
-        chartData: this.props.lineChartData || [],
-        chartOptions: this.props.lineChartOptions || {},
-      });
-    }
   }
 
   render() {
@@ -64,17 +50,5 @@ class LineChart extends React.Component {
     );
   }
 }
-
-// Setting default values for the props of LineChart
-LineChart.defaultProps = {
-  lineChartData: [],
-  lineChartOptions: {},
-};
-
-// Typechecking props for the LineChart
-LineChart.propTypes = {
-  lineChartData: PropTypes.array,
-  lineChartOptions: PropTypes.object,
-};
 
 export default LineChart;

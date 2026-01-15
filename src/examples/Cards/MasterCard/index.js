@@ -30,27 +30,28 @@ function MasterCard({ number, valid, cvv }) {
   console.log("MasterCard number prop received:", number);
 
   // Ensure number is a string, defaulting to "0000000000000000" if it's null, undefined, or an empty string.
-  const safeNumberString = (number === null || number === undefined || number === "")
+  const rawNumberString = (number === null || number === undefined || number === "")
     ? "0000000000000000"
     : String(number);
 
-  console.log("MasterCard safeNumberString:", safeNumberString);
+  console.log("MasterCard rawNumberString (after initial conversion):", rawNumberString);
 
-  // Split the string into an array of characters. This should always result in an array.
-  const numbers = safeNumberString.split('');
-
-  // Defensive check: if for some reason 'numbers' is not an array or has an invalid length,
-  // default to a safe 16-digit array to prevent further errors.
-  let displayNumbers = numbers;
-  if (!Array.isArray(numbers) || numbers.length !== 16) {
-    console.error("MasterCard: 'number' prop resulted in an invalid array or length. Falling back to default.", numbers);
-    displayNumbers = "0000000000000000".split('');
+  // Remove non-digit characters and ensure it's exactly 16 digits long
+  let safeNumberString = rawNumberString.replace(/\D/g, ''); // Remove non-digits
+  if (safeNumberString.length < 16) {
+    safeNumberString = safeNumberString.padEnd(16, '0'); // Pad with '0' if too short
+    console.warn("MasterCard: 'number' prop was too short, padded with zeros:", safeNumberString);
+  } else if (safeNumberString.length > 16) {
+    safeNumberString = safeNumberString.substring(0, 16); // Truncate if too long
+    console.warn("MasterCard: 'number' prop was too long, truncated:", safeNumberString);
   }
 
-  const num1 = displayNumbers.slice(0, 4).join("");
-  const num2 = displayNumbers.slice(4, 8).join("");
-  const num3 = displayNumbers.slice(8, 12).join("");
-  const num4 = displayNumbers.slice(12, 16).join("");
+  console.log("MasterCard final safeNumberString (16 digits):", safeNumberString);
+
+  const num1 = safeNumberString.slice(0, 4);
+  const num2 = safeNumberString.slice(4, 8);
+  const num3 = safeNumberString.slice(8, 12);
+  const num4 = safeNumberString.slice(12, 16);
 
   return (
     <Card sx={{ background: `url('${billingCard}')`, backdropfilter: "blur(31px)" }}>

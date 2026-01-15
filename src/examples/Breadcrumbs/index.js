@@ -31,7 +31,7 @@ import VuiBox from "components/VuiBox";
 import VuiTypography from "components/VuiTypography";
 
 function Breadcrumbs({ icon, title, route, light }) {
-  const routes = route.slice(0, -1);
+  const routes = route && Array.isArray(route) ? route.slice(0, -1) : [];
 
   return (
     <VuiBox mr={{ xs: 0, xl: 8 }}>
@@ -75,7 +75,7 @@ function Breadcrumbs({ icon, title, route, light }) {
           color={light ? "white" : "dark"}
           sx={{ lineHeight: 0 }}
         >
-          {title.replace("-", " ")}
+          {title ? title.replace("-", " ") : ""}
         </VuiTypography>
       </MuiBreadcrumbs>
       <VuiTypography
@@ -85,7 +85,7 @@ function Breadcrumbs({ icon, title, route, light }) {
         color={light ? "white" : "dark"}
         noWrap
       >
-        {title.replace("-", " ")}
+        {title ? title.replace("-", " ") : ""}
       </VuiTypography>
     </VuiBox>
   );
